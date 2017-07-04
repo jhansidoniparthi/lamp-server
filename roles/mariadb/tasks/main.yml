@@ -1,0 +1,35 @@
+---
+# tasks file for mariadb
+- name: install MariaDb server package
+  apt: name=mariadb-server state=present
+
+
+- name: start mysql service
+  service: name=mysql state=started enable=true
+
+- name: install python mysql package require dfor mysql-db tasks
+  apt: name=python-mysqldb state=present
+
+- name: create a new database
+  mysql_db: name=siva state=present collation=utf8_general_ci
+
+- name: create database user
+  mysql_user: name=siva password=siva priv=*_*:ALL  host=localhost state=present
+
+- name: copy sample data
+  copy: src=dump.sql dest=/tmp/dump.sql
+
+- name: insert sample data
+  shell: cat /tmp/dump.sql | mysql -u demo -pdemo demo
+
+- name: install mysql extension for php
+  apt: name=php7-mysql state=present
+
+- name: restart apache
+  service: name=apache2 state=restarted
+
+- name: install hello world php script with database
+  copy: src=db.php dest=/var/www/html/db.php mode=0664
+
+  tags:
+    - mriadb

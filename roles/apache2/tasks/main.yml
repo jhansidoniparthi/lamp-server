@@ -1,0 +1,16 @@
+---
+# tasks file for apache2
+- name: install apache
+  apt: name=apache2 state=present
+
+- name: install php module for apache
+  apt: name=libapache2-mod-php7 state=present
+
+- name: start apache
+  service: name=apache2 state=running enable=yes
+
+- name: install hello world php script
+  copy: src=index.php dest=/var/www/index.php mode=0664
+ 
+  tags:
+    - apache2

@@ -1,0 +1,5 @@
+---
+- hosts: testserver
+  roles:
+    - apache2
+    - mariadb
