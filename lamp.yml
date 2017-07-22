@@ -1,5 +1,6 @@
 ---
 - hosts: testserver
+  remote_user: root 
   roles:
     - apache2
     - mariadb

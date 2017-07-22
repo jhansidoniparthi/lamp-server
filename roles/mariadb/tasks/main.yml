@@ -1,11 +1,15 @@
 ---
-# tasks file for mariadb
+# me: 1b. Add APT repository
+- name: 1a. Add APT GPG signing key
+  apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xCBCB082A1BB943DB state=present
+
+
 - name: install MariaDb server package
   apt: name=mariadb-server state=present
 
 
 - name: start mysql service
-  service: name=mysql state=started enable=true
+  service: name=mysql state=started
 
 - name: install python mysql package require dfor mysql-db tasks
   apt: name=python-mysqldb state=present
@@ -14,22 +18,25 @@
   mysql_db: name=siva state=present collation=utf8_general_ci
 
 - name: create database user
-  mysql_user: name=siva password=siva priv=*_*:ALL  host=localhost state=present
+  mysql_user: name=siva password=siva priv=*.*:ALL  host=localhost state=present
+  tags:
+    - dbuser
 
 - name: copy sample data
   copy: src=dump.sql dest=/tmp/dump.sql
 
 - name: insert sample data
-  shell: cat /tmp/dump.sql | mysql -u demo -pdemo demo
-
+  shell: cat /tmp/dump.sql | mysql -u siva -psiva siva
+  tags:
+    - insert
 - name: install mysql extension for php
-  apt: name=php7-mysql state=present
-
+  apt: name=php-mysql state=present
+  tags:
+    - phpmysql
 - name: restart apache
   service: name=apache2 state=restarted
 
 - name: install hello world php script with database
   copy: src=db.php dest=/var/www/html/db.php mode=0664
-
   tags:
     - mriadb
