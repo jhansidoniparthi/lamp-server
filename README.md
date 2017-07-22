@@ -45,7 +45,6 @@ lamp-server
               - apahe2
     
 
-**step5:    run playbook**
-
-        with command
+**step5:    run playbook**  
+- with command
         `ansible-playbook lamp.yml`
