@@ -1,16 +1,22 @@
  
-lamp-server
+###lamp-server
+
 =======
+
 +++++++++++++++
+
 step1: create hosts file
-       -> vi hosts
-       [testserver]
-       localhost
-       alave ansible_user=192.168.36.2
+    -> vi hosts
+            [testserver]
+                localhost
+                    slave ansible_user=192.168.36.2
+ 
  step2: create lamp.yml
-      -> call roles - mariadb
-                    - apache2
-  step3: craete role mariadb
+     -> call roles 
+         - mariadb
+         - apache2
+ 
+ step3: craete role mariadb
         roles
 	|
 	|-----<mariadb>
@@ -33,5 +39,6 @@ step1: create hosts file
                 |----> files
                 |     |---> index.php
 	 
+    
     step5: run playbook
             with command----> ansible-playbook lamp.yml
